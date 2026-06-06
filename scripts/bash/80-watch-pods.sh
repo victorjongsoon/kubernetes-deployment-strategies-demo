@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-kubectl get pods -n k8s-demo -w
+echo "Watching pods with VERSION label..."
+echo
+
+watch -n 2 'kubectl get pods -n k8s-demo -L version'

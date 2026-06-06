@@ -75,13 +75,7 @@ This starts a local registry if needed, then builds and pushes:
 - `localhost:5000/k8s-deploy-demo:v1`
 - `localhost:5000/k8s-deploy-demo:v2`
 
-You can also run the app locally without Kubernetes:
-
-```bash
-docker run --rm -p 5000:5000 k8s-deploy-demo:v1
-```
-
-Then open [http://localhost:5000](http://localhost:5000).
+The `localhost:5000` address above is the local Docker registry used by Kubernetes to pull images. It is not the Kubernetes app URL.
 
 ## Browser Access
 
@@ -151,7 +145,7 @@ Canary:
 .\scripts\powershell\04-cleanup.ps1
 ```
 
-Useful helper:
+Useful helper for a clean, aligned pod watch:
 
 ```powershell
 .\scripts\powershell\80-watch-pods.ps1
@@ -280,7 +274,7 @@ Kubernetes Deployment natively supports `Recreate` and `RollingUpdate`. Blue-Gre
 ## Medium Article Screenshot And GIF Ideas
 
 - Recreate: show the browser failing or briefly unavailable while pods restart.
-- RollingUpdate: record `kubectl get pods -n k8s-demo -L version -w` as old and new pods coexist.
+- RollingUpdate: record `.\scripts\powershell\80-watch-pods.ps1` as old and new pod versions coexist.
 - Blue-Green: show the app changing from blue `v1` to green `v2` after applying `service-green.yaml`.
 - Canary: refresh the browser or loop `/api/info` and capture occasional canary responses.
 - Summary shot: put the browser beside `kubectl get pods -n k8s-demo --show-labels`.
