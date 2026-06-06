@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-deploy-demo-stable
+  namespace: k8s-demo
+  labels:
+    app: k8s-deploy-demo
+    version: v1
+    track: stable
+spec:
+  replicas: 9
+  selector:
+    matchLabels:
+      app: k8s-deploy-demo
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: k8s-deploy-demo
+        version: v1
+        track: stable
+    spec:
+      containers:
+        - name: app
+          image: k8s-deploy-demo:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: APP_STRATEGY
+              value: Canary stable
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
