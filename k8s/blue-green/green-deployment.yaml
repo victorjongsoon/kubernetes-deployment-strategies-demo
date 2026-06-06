@@ -22,8 +22,8 @@ spec:
     spec:
       containers:
         - name: app
-          image: k8s-deploy-demo:v2
-          imagePullPolicy: Never
+          image: localhost:5000/k8s-deploy-demo:v2
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:
@@ -37,11 +37,13 @@ spec:
             httpGet:
               path: /healthz
               port: 5000
+            timeoutSeconds: 3
             initialDelaySeconds: 3
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /healthz
               port: 5000
+            timeoutSeconds: 3
             initialDelaySeconds: 10
             periodSeconds: 10
